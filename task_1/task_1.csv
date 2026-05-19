@@ -1,0 +1,51 @@
+ID,Question,Intent,Tables Involved,Joins,Ground Truth SQL
+1,List all products,Retrieve all records from products table,products,None,SELECT * FROM products;
+2,Get all customers,Retrieve all records from customers table,customers,None,SELECT * FROM customers;
+3,Show all orders,Retrieve all records from orders table,orders,None,SELECT * FROM orders;
+4,List all employees,Retrieve all records from employees table,employees,None,SELECT * FROM employees;
+5,Get all offices,Retrieve all records from offices table,offices,None,SELECT * FROM offices;
+6,Show all product lines,Retrieve all records from productlines table,productlines,None,SELECT * FROM productlines;
+7,List all payments,Retrieve all records from payments table,payments,None,SELECT * FROM payments;
+8,Get product names and prices,Retrieve specific details for all products,products,None,"SELECT ""productName"", ""buyPrice"", ""MSRP"" FROM products;"
+9,Get customer names and cities,Retrieve names and locations of customers,customers,None,"SELECT ""customerName"", city FROM customers;"
+10,List employee first and last names,Retrieve employee names,employees,None,"SELECT ""firstName"", ""lastName"" FROM employees;"
+11,Get all order dates,Retrieve dates of all placed orders,orders,None,"SELECT ""orderDate"" FROM orders;"
+12,Show product vendor list,Retrieve a unique list of vendors,products,None,"SELECT DISTINCT ""productVendor"" FROM products;"
+13,Get all product codes,Retrieve identifiers for all products,products,None,"SELECT ""productCode"" FROM products;"
+14,List all countries from offices,Retrieve unique countries where offices exist,offices,None,SELECT DISTINCT country FROM offices;
+15,Show all order statuses,Retrieve unique status types for orders,orders,None,SELECT DISTINCT status FROM orders;
+16,Get all payment amounts,Retrieve the monetary value of all payments,payments,None,SELECT amount FROM payments;
+17,List all job titles,Retrieve unique job titles,employees,None,"SELECT DISTINCT ""jobTitle"" FROM employees;"
+18,Get customer phone numbers,Retrieve contact numbers,customers,None,"SELECT ""customerName"", phone FROM customers;"
+19,Show product MSRP values,Retrieve MSRP for all products,products,None,"SELECT ""productName"", ""MSRP"" FROM products;"
+20,List order numbers,Retrieve identifiers for all orders,orders,None,"SELECT ""orderNumber"" FROM orders;"
+21,Get orders with customer names,Link order records to customers,"orders, customers","o.""customerNumber"" = c.""customerNumber""","SELECT o.""orderNumber"", c.""customerName"" FROM orders o JOIN customers c ON o.""customerNumber"" = c.""customerNumber"";"
+22,Get employees with office city,Link employees to office locations,"employees, offices","e.""officeCode"" = o.""officeCode""","SELECT e.""firstName"", e.""lastName"", o.city FROM employees e JOIN offices o ON e.""officeCode"" = o.""officeCode"";"
+23,Get payments with customer names,Link payment records to customers,"payments, customers","p.""customerNumber"" = c.""customerNumber""","SELECT p.""paymentDate"", p.amount, c.""customerName"" FROM payments p JOIN customers c ON p.""customerNumber"" = c.""customerNumber"";"
+24,Get order details with product names,Link line items to product names,"orderdetails, products","od.""productCode"" = p.""productCode""","SELECT od.""orderNumber"", p.""productName"", od.""quantityOrdered"", od.""priceEach"" FROM orderdetails od JOIN products p ON od.""productCode"" = p.""productCode"";"
+25,Get products with product line desc,Link products to category descriptions,"products, productlines","p.""productLine"" = pl.""productLine""","SELECT p.""productName"", pl.""textDescription"" FROM products p JOIN productlines pl ON p.""productLine"" = pl.""productLine"";"
+26,Get customers with sales rep names,Link customers to employee reps,"customers, employees","c.""salesRepEmployeeNumber"" = e.""employeeNumber""","SELECT c.""customerName"", e.""firstName"" AS ""repFirstName"", e.""lastName"" AS ""repLastName"" FROM customers c JOIN employees e ON c.""salesRepEmployeeNumber"" = e.""employeeNumber"";"
+27,Get orders with customer city,Link orders to purchasing customer city,"orders, customers","o.""customerNumber"" = c.""customerNumber""","SELECT o.""orderNumber"", c.city FROM orders o JOIN customers c ON o.""customerNumber"" = c.""customerNumber"";"
+28,Get employees and their manager,Self-Join employees to managers,employees,"e.""reportsTo"" = m.""employeeNumber""","SELECT e.""firstName"" AS ""Employee"", m.""firstName"" AS ""Manager"" FROM employees e LEFT JOIN employees m ON e.""reportsTo"" = m.""employeeNumber"";"
+29,Get orderdetails with product vendor,Link line items to product vendor,"orderdetails, products","od.""productCode"" = p.""productCode""","SELECT od.""orderNumber"", p.""productVendor"" FROM orderdetails od JOIN products p ON od.""productCode"" = p.""productCode"";"
+30,Get payments with customer country,Link payments to customer country,"payments, customers","p.""customerNumber"" = c.""customerNumber""","SELECT p.amount, c.country FROM payments p JOIN customers c ON p.""customerNumber"" = c.""customerNumber"";"
+31,Count customers per country,Group customers by country,customers,None,"SELECT country, COUNT(*) AS ""customerCount"" FROM customers GROUP BY country;"
+32,Total payments per customer,Group payments by customer,payments,None,"SELECT ""customerNumber"", SUM(amount) AS ""totalPayments"" FROM payments GROUP BY ""customerNumber"";"
+33,Number of orders per status,Group orders by status,orders,None,"SELECT status, COUNT(*) AS ""orderCount"" FROM orders GROUP BY status;"
+34,Products per product line,Group products by line,products,None,"SELECT ""productLine"", COUNT(*) AS ""productCount"" FROM products GROUP BY ""productLine"";"
+35,Employees per office,Group employees by office code,employees,None,"SELECT ""officeCode"", COUNT(*) AS ""employeeCount"" FROM employees GROUP BY ""officeCode"";"
+36,Total stock per product vendor,Group products by vendor,products,None,"SELECT ""productVendor"", SUM(""quantityInStock"") AS ""totalStock"" FROM products GROUP BY ""productVendor"";"
+37,Average buy price per product line,Group products by line,products,None,"SELECT ""productLine"", AVG(""buyPrice"") AS ""avgBuyPrice"" FROM products GROUP BY ""productLine"";"
+38,Orders per customer,Group orders by customer,orders,None,"SELECT ""customerNumber"", COUNT(*) AS ""orderCount"" FROM orders GROUP BY ""customerNumber"";"
+39,Max MSRP per product line,Group products by line,products,None,"SELECT ""productLine"", MAX(""MSRP"") AS ""maxMSRP"" FROM products GROUP BY ""productLine"";"
+40,Min buy price per vendor,Group products by vendor,products,None,"SELECT ""productVendor"", MIN(""buyPrice"") AS ""minBuyPrice"" FROM products GROUP BY ""productVendor"";"
+41,Total number of customers,Count all rows in customers,customers,None,"SELECT COUNT(*) AS ""totalCustomers"" FROM customers;"
+42,Total number of products,Count all rows in products,products,None,"SELECT COUNT(*) AS ""totalProducts"" FROM products;"
+43,Total revenue from payments,Sum all payment amounts,payments,None,"SELECT SUM(amount) AS ""totalRevenue"" FROM payments;"
+44,Average product price,Calculate average buy price,products,None,"SELECT AVG(""buyPrice"") AS ""avgPrice"" FROM products;"
+45,Max payment amount,Find highest single payment,payments,None,"SELECT MAX(amount) AS ""maxPayment"" FROM payments;"
+46,Min payment amount,Find lowest single payment,payments,None,"SELECT MIN(amount) AS ""minPayment"" FROM payments;"
+47,Count total orders,Count all rows in orders,orders,None,"SELECT COUNT(*) AS ""totalOrders"" FROM orders;"
+48,Total quantity in stock,Sum stock of all products,products,None,"SELECT SUM(""quantityInStock"") AS ""totalStock"" FROM products;"
+49,Average MSRP,Calculate average MSRP,products,None,"SELECT AVG(""MSRP"") AS ""avgMSRP"" FROM products;"
+50,Number of employees,Count all rows in employees,employees,None,"SELECT COUNT(*) AS ""totalEmployees"" FROM employees;"
