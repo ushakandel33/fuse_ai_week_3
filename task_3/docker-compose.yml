@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=usha@123
+      - POSTGRES_DB=text2sql_assignment
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # This automatically executes seed.sql on the first startup
+      - ./data/seed.sql:/docker-entrypoint-initdb.d/seed.sql
+
+  app:
+    build: .
+    ports:
+      - "8501:8501"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=text2sql_assignment
+      - DB_USER=postgres
+      - DB_PASSWORD=usha@123
+      - DB_PORT=5432
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    depends_on:
+      - db
+
+volumes:
+  pgdata:
