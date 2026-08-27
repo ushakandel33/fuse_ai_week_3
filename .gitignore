@@ -1,4 +1,19 @@
+# macOS
 .DS_Store
-task_3/.env
-*/.env
+
+# Environment variables / secrets
 .env
+*.env
+
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# IDE
+.vscode/
+.idea/
